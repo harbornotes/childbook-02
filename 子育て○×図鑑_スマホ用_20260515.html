@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>子育て○×図鑑 - てぃ先生</title>
+  <style>
+    /* CSS Variables & Color Palette */
+    :root {
+      /* Light Mode Colors */
+      --bg-color: #f8fafc;
+      --bg-nav: rgba(255, 255, 255, 0.9);
+      --text-main: #334155;
+      --text-muted: #64748b;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      
+      --ng-bg: #fff1f2;
+      --ng-border: #fca5a5;
+      --ng-text: #be123c;
+      
+      --ok-bg: #f0fdf4;
+      --ok-border: #86efac;
+      --ok-text: #15803d;
+      
+      --tips-bg: #fffbeb;
+      --tips-border: #fde68a;
+      --tips-text: #b45309;
+      
+      --bubble-bg: #e0f2fe;
+      --bubble-text: #0369a1;
+      
+      --arrow-color: #cbd5e1;
+      --highlight: rgba(253, 224, 71, 0.5);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        /* Dark Mode Colors */
+        --bg-color: #0f172a;
+        --bg-nav: rgba(15, 23, 42, 0.9);
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --card-bg: #1e293b;
+        --border-color: #334155;
+        
+        --ng-bg: #4c0519;
+        --ng-border: #9f1239;
+        --ng-text: #fda4af;
+        
+        --ok-bg: #052e16;
+        --ok-border: #065f46;
+        --ok-text: #6ee7b7;
+        
+        --tips-bg: #451a03;
+        --tips-border: #92400e;
+        --tips-text: #fcd34d;
+        
+        --bubble-bg: #082f49;
+        --bubble-text: #7dd3fc;
+        
+        --arrow-color: #475569;
+        --highlight: rgba(202, 138, 4, 0.5);
+      }
+    }
+
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    strong {
+      font-weight: 600;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 16px 80px;
+    }
+
+    /* Page Header (No <header> tag used) */
+    .page-header {
+      padding: 40px 16px 24px;
+      text-align: center;
+    }
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .page-meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Sticky Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      background: var(--bg-nav);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      gap: 12px;
+      padding: 12px 16px;
+      margin: 0 -16px 32px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--border-color);
+      scrollbar-width: none;
+    }
+    .top-nav::-webkit-scrollbar {
+      display: none;
+    }
+    .nav-item {
+      white-space: nowrap;
+      background: var(--card-bg);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: opacity 0.2s;
+    }
+    .nav-item:active {
+      opacity: 0.7;
+    }
+
+    /* Section Styles */
+    .category-section {
+      margin-bottom: 48px;
+      scroll-margin-top: 70px;
+    }
+    .category-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Grid Layout for Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Card Styles */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      padding: 20px;
+      border: 1px solid var(--border-color);
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+
+    /* Comparison Box (NG/OK) */
+    .comparison {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .box {
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid;
+    }
+    .box-header {
+      margin-bottom: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+    .box-text {
+      font-weight: bold;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+    .box-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* specific box styles */
+    .ng-box {
+      background-color: var(--ng-bg);
+      border-color: var(--ng-border);
+    }
+    .ng-box .badge {
+      background-color: var(--card-bg);
+      color: var(--ng-text);
+      border: 1px solid var(--ng-border);
+    }
+    .ok-box {
+      background-color: var(--ok-bg);
+      border-color: var(--ok-border);
+    }
+    .ok-box .badge {
+      background-color: var(--card-bg);
+      color: var(--ok-text);
+      border: 1px solid var(--ok-border);
+    }
+    .tips-box {
+      background-color: var(--tips-bg);
+      border-color: var(--tips-border);
+    }
+    .tips-box .badge {
+      background-color: var(--card-bg);
+      color: var(--tips-text);
+      border: 1px solid var(--tips-border);
+    }
+
+    /* Arrow */
+    .arrow {
+      text-align: center;
+      color: var(--arrow-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 24px;
+    }
+    .arrow svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    /* Speech Bubble for Quotes */
+    .speech-bubble {
+      position: relative;
+      background: var(--bubble-bg);
+      color: var(--bubble-text);
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-top: 12px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 20px;
+      border-width: 0 8px 8px 8px;
+      border-style: solid;
+      border-color: transparent transparent var(--bubble-bg) transparent;
+    }
+
+    /* Highlight */
+    .highlight {
+      background: linear-gradient(transparent 60%, var(--highlight) 60%);
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">子育て○×図鑑</h1>
+    </div>
+
+    <!-- Sticky Navigation -->
+    <div class="top-nav">
+      <a href="#comm" class="nav-item">💡 声かけ・対話</a>
+      <a href="#action" class="nav-item">🚀 行動・やる気</a>
+      <a href="#trouble" class="nav-item">🛡️ 叱り方・注意</a>
+      <a href="#praise" class="nav-item">❤️ 褒め方・自信</a>
+    </div>
+
+    <!-- カテゴリ1: 声かけ・対話 -->
+    <div id="comm" class="category-section">
+      <h2 class="category-title"><span>💡</span> 声かけ・コミュニケーション</h2>
+      <div class="card-grid">
+
+        <article class="card">
+          <h3 class="card-title">忙しくて手が離せない時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「今、忙しいから後でね」と何度も言う</p>
+              <p class="box-note">子どもは寂しくなり、不安を抱きます。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">1分で済むならすぐ対応。<br>後回しにする時は付箋を活用。</p>
+              <div class="speech-bubble">「忘れないように付箋に書いて貼っておくね！」</div>
+              <p class="box-note">理想は5〜10分手を止めてスキンシップ（膝に乗せる等）。気持ちが安定し長く待てるようになります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">子どもの「ママ、お茶！」</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">先回りして応える / 「ママはお茶じゃありません！」と返す</p>
+              <p class="box-note">昔は単語だけで喜んで応えていたため、急な対応の変化に子どもは戸惑います。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">「分からないふり」をして、子どもが自分から伝える場面を作る</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">学校の様子を聞く時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「今日、学校でどうだった？」</p>
+              <p class="box-note">質問があいまいで、子どもには難しいため「分からない」「普通」と言われがちです。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">子どもが話しそうなタイミングを見て、具体的に聞く</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">朝の起こし方</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「起きて！」といきなり激しく起こす</p>
+              <p class="box-note">いきなり激しく起こされると子どもは不安を感じます。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">20秒でも添い寝をして、ぎゅっと抱きしめながら起こす</p>
+              <p class="box-note">安心して行動に移る意欲が生まれやすくなります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">見て見てアピールが激しい時</h3>
+          <div class="comparison">
+            <div class="box tips-box">
+              <div class="box-header"><span class="badge">💡 てぃ先生のPoint</span></div>
+              <p class="box-text">1日5分でいいので、子どもをじっと見る時間を作る</p>
+              <p class="box-note">そうすることで、満たされた子どもの「見て見てアピール」が減っていきます。</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+
+    <!-- カテゴリ2: 行動の促し・やる気 -->
+    <div id="action" class="category-section">
+      <h2 class="category-title"><span>🚀</span> 行動の促し・やる気</h2>
+      <div class="card-grid">
+
+        <article class="card">
+          <h3 class="card-title">指示の出し方（魔法のステップ）</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">ネガティブな言葉で終わる</p>
+              <p class="box-note">ネガティブで終わると子どもは動きません。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">「①共感 → ②指示 → ③共感で終わる」と心が動く</p>
+              <div class="speech-bubble">①そうだね、まだ遊びたいよね<br>②でもお家に帰る時間だよ<br>③優衣ちゃん、楽しそうだったね。ママも見ていて楽しかったよ！</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">次の行動へ移る時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「家に帰るよ」</p>
+              <p class="box-note">大人と同じで、子どもも次にコレをしたいという予定を持っています。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">ポジティブな言葉で締める</p>
+              <div class="speech-bubble">「美味しいご飯を食べに家に行こう！」</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">動かない時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「置いて言っちゃうからね」</p>
+              <p class="box-note">心に悪影響があり、一方的な命令は拒否されやすいです。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">子どもに選択肢を示してあげる</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">やるべきことの指示</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「お片づけしよ～」「宿題しなさい」</p>
+              <p class="box-note">指示されると、自分で考えて行動する機会を失ってしまいます。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">「質問」して、自分で考える力をつける</p>
+              <div class="speech-bubble">「最初になにを片付ける？」<br>「宿題、いつ始める？」</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">やってほしいことがある時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「宿題しなきゃダメでしょ！」</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">ほんのちょっと（1割）でもできたことを褒めてやる気にさせる</p>
+              <div class="speech-bubble">少しでもできたら「よく出来てるね！」</div>
+              <p class="box-note">もっとやってほしい気持ちは、いったん置いておきましょう。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">頑張ってほしい時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">大人の思い通りに頑張らせる</p>
+              <p class="box-note">やる気や理由なくがんばるのは難しいものです。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">存在そのものを肯定する</p>
+              <div class="speech-bubble">「優衣ちゃんがいてくれてよかった！」</div>
+              <p class="box-note">そう伝えると、子どもは前向きな気持ちになり頑張れます。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">子どもとの「約束」</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">一方的な「期待・命令」や、ハードルの高いことを求める</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">「守りやすい簡単な約束」をして、成功体験を積む</p>
+              <p class="box-note">「お約束を守れた！」という自信がつき、難しい約束も守れるようになっていきます。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">電車などで落ち着きがない時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">無理にじっとさせる</p>
+              <p class="box-note">子どもの「動きたい欲求」は動かないと止まりません。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">子どもの体を動かしてあげる</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">物事の始め方</h3>
+          <div class="comparison">
+            <div class="box tips-box">
+              <div class="box-header"><span class="badge">💡 てぃ先生のPoint</span></div>
+              <p class="box-text">はじめから順序通り正しくやるより、わかったところから実践する</p>
+              <p class="box-note">とにかくやってみて、それを実践する方が重要です。</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+
+    <!-- カテゴリ3: 叱り方・トラブル対応 -->
+    <div id="trouble" class="category-section">
+      <h2 class="category-title"><span>🛡️</span> 叱り方・注意のしかた</h2>
+      <div class="card-grid">
+
+        <article class="card">
+          <h3 class="card-title">イライラした時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">イライラして大声で怒鳴りつける</p>
+              <p class="box-note">不安や恐怖で一時的に言うことは聞きますが、また同じことをしがち。怒鳴ると余計イライラします。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">息を吐ききってから話す</p>
+              <p class="box-note">冷静に話ができるようになります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">叱る前の準備</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">いきなり叱る</p>
+              <p class="box-note">子どもは「叱られる」と分かると耳をふさいでしまいます。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">まずは、いいところを認めてから叱る</p>
+              <p class="box-note">そうすることで子どもに響くようになります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">急に注意する時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">急に叱りつける</p>
+              <p class="box-note">「防御反応」が働き、心を守るためにうそをついたりごまかしたりして反省が見られにくくなります。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">怒られる心配のない環境を作ってから注意する</p>
+              <div class="speech-bubble">「大丈夫だよ。ママ分かっているよ。でも◯◯するのはよくないよね。どうすればよかったかな？」</div>
+              <p class="box-note">心に余裕ができて反省することができます。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">叱られたことを繰り返す</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">ただ叱り続ける</p>
+              <p class="box-note">ママに注目してほしくて（怒られてでも構ってほしくて）やっている可能性があります。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">子どもが良い行動をした時にすぐにほめる</p>
+              <p class="box-note">子どもも「ポジティブな注目」の方が嬉しいので、良くない行動が少なくなります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">間違いの指摘</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">すぐに間違いを指摘、修正してばかりいる</p>
+              <p class="box-note">追い詰められた気分になり、言い訳したくなり間違いを認めなくなります。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">子どもが自分で間違いに気づく手助けをする</p>
+              <div class="speech-bubble">「あれー。ぬいぐるみの箱に積み木が入っているよ。積み木のおうちはどこだっけ？」</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">外で失礼なことを言った時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">その場で叱る（「あの人の頭…」等に対して）</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">家に持ち帰ることを約束する</p>
+              <div class="speech-bubble">「優衣ちゃんが不思議だなと思ったことを言われたくないと思う人もいるから、おうちに帰ってママに教えてね」</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">外で静かにしてほしい時</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「静かに」と言った直後、一瞬だけ静かになったのをスルーする</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">静かになった瞬間に、静かにできたことを褒める</p>
+              <p class="box-note">その瞬間に褒めると良い状態を維持しやすくなります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">親のケンカ</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">悪い夫婦喧嘩を見せる</p>
+              <p class="box-note">子どもの記憶や感情に害があります。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">ケンカをしたら、仲直りするところまで見せる</p>
+            </div>
+          </div>
+        </article>
+        
+        <article class="card">
+          <h3 class="card-title">いたずら・悪いこと</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">すぐに制止する</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">どんなことに興味や関心があるのか見守る時も大事</p>
+              <p class="box-note">大人にはいたずらに見えても、子どもの成長（何かの能力を伸ばそうとしている）に必要な場合があります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">叱る時の立ち位置</h3>
+          <div class="comparison">
+            <div class="box tips-box">
+              <div class="box-header"><span class="badge">💡 てぃ先生のPoint</span></div>
+              <p class="box-text">子どもを壁側に立たせるのではなく、<strong class="highlight">大人が壁を背にして話す</strong></p>
+              <p class="box-note">後ろが壁なら背景がごちゃごちゃしていなく、子どもは話を聞きやすくなります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">失敗した時の言い訳を減らす</h3>
+          <div class="comparison">
+            <div class="box tips-box">
+              <div class="box-header"><span class="badge">💡 てぃ先生のPoint</span></div>
+              <p class="box-text">間違えたり失敗しても大好きだと伝えてあげる</p>
+              <div class="speech-bubble">「大丈夫。失敗しても優衣ちゃんのこと大好きだよ」</div>
+              <p class="box-note">「失敗してもママは自分のことが好きなんだ」と安心できれば、言い訳する必要が減っていきます。</p>
+            </div>
+          </div>
+        </article>
+        
+        <article class="card">
+          <h3 class="card-title">泣いている時</h3>
+          <div class="comparison">
+            <div class="box tips-box">
+              <div class="box-header"><span class="badge">💡 てぃ先生のPoint</span></div>
+              <p class="box-text">泣いている子どもの気持ちを言葉にして、同じ表情で共感する</p>
+              <div class="speech-bubble">「そっかあ、それは悲しかったね」</div>
+              <p class="box-note">子どもは、助けてもらえると信じているからこそ泣きます。</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+
+    <!-- カテゴリ4: 褒め方・自己肯定感 -->
+    <div id="praise" class="category-section">
+      <h2 class="category-title"><span>❤️</span> 褒め方・自己肯定感の育て方</h2>
+      <div class="card-grid">
+
+        <article class="card">
+          <h3 class="card-title">自己肯定感の育て方</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">何かができたときだけ褒める</p>
+              <p class="box-note">成長するにつれ「自己肯定感」（＝根拠のない自信）が生まれにくくなります。</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">名前を呼ぶ時に「大好きな」「大事な」とつける</p>
+              <p class="box-note">何かいいことをしなくても、自分は親に愛されていると感じることで高まります。高い子の方が大きく成長できます。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">才能と努力の褒め方</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">生まれつきの才能を褒める</p>
+              <p class="box-note">「頭がいいね」や「足が速いね」</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">努力したことをほめてあげる</p>
+              <div class="speech-bubble">「いつも勉強頑張ってるから点数があがったね」<br>「走るの速くなったね！いつも練習してるからかな？」</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">失敗した時（飲み物をこぼした等）</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">失敗したことを責める</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">失敗した時の対応を教えてあげる</p>
+              <div class="speech-bubble">「大丈夫だよ！こうやって拭けばすぐ乾くからね。自分でやってごらん。」</div>
+              <p class="box-note">子どもがチャレンジできるようになります。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">ごほうびのあげ方</h3>
+          <div class="comparison">
+            <div class="box ng-box">
+              <div class="box-header"><span class="badge">× よくあるNG</span></div>
+              <p class="box-text">「〇〇できたらごほうびをあげる」と予告する</p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24"><path d="M11 4v12.17l-5.5-5.5-1.42 1.42L12 20.17l7.92-7.92-1.42-1.42-5.5 5.5V4h-2z"/></svg>
+            </div>
+            <div class="box ok-box">
+              <div class="box-header"><span class="badge">○ てぃ先生の正解</span></div>
+              <p class="box-text">「〇〇がんばっていたよね」とプロセスや努力を褒める</p>
+              <p class="box-note">何かモノをあげる必要はありません。あげるにしてもサプライズの方が効果が高いです。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">これからの「生きる力」の土台</h3>
+          <div class="comparison">
+            <div class="box tips-box">
+              <div class="box-header"><span class="badge">💡 てぃ先生のPoint</span></div>
+              <p class="box-text">生きる力の土台となるのは「自己肯定感」</p>
+              <p class="box-note">子どもが興味を持って楽しんで取り組んでいることに対して、大人がきちんと目を向けて認めてあげれば、子どもは自然と物事に対して自信を持つことができます。</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
